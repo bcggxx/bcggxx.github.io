@@ -32,7 +32,7 @@ posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
               })}
             </time>
             <h2>
-              <a href={`/posts/${post.slug}`}>{post.data.title}</a>
+              <a href={`/posts/${post.id.replace(/\.md$/, '')}`}>{post.data.title}</a>
             </h2>
             {post.data.description && <p>{post.data.description}</p>}
             {
