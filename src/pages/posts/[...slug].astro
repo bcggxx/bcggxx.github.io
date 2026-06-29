@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={`${post.data.title} - bcggxx`} description={post.data.description}>
+  <article class="post">
+    <header class="post-header">
+      <time datetime={post.data.date.toISOString()}>
+        {post.data.date.toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
+      <h1>{post.data.title}</h1>
+      {
+        post.data.tags && (
+          <div class="tags">
+            {post.data.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )
+      }
+    </header>
+    <div class="post-content">
+      <Content />
+    </div>
+    <footer class="post-footer">
+      <a href="/">&larr; 返回首页</a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .post {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+  .post-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  .post-header time {
+    color: #999;
+    font-size: 0.9rem;
+  }
+  .post-header h1 {
+    margin: 0.5rem 0;
+    font-size: 2rem;
+  }
+  .post-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+  }
+  .post-content :global(h2) {
+    margin-top: 2rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .post-content :global(h3) {
+    margin-top: 1.5rem;
+  }
+  .post-content :global(pre) {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+  }
+  .post-content :global(code) {
+    background: #f0f0f0;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+  .post-content :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+  .post-content :global(blockquote) {
+    border-left: 4px solid #0066cc;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+  }
+  .post-content :global(img) {
+    max-width: 100%;
+    border-radius: 6px;
+  }
+  .tags {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.8rem;
+    background: #f0f0f0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    color: #666;
+  }
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+  .post-footer a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+</style>

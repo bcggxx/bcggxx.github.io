@@ -1,0 +1,115 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const posts = await getCollection('posts', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout title="bcggxx's Blog" description="技术博客，记录点滴">
+  <section class="hero">
+    <h1>bcggxx's Blog</h1>
+    <p>技术分享 &amp; 随手记录</p>
+  </section>
+
+  <section class="post-list">
+    {
+      posts.length === 0 ? (
+        <p class="empty">
+          还没有文章，把 .md 文件推送到 <code>src/content/posts/</code> 即可自动发布。
+        </p>
+      ) : (
+        posts.map((post) => (
+          <article class="post-card">
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            <h2>
+              <a href={`/posts/${post.slug}`}>{post.data.title}</a>
+            </h2>
+            {post.data.description && <p>{post.data.description}</p>}
+            {
+              post.data.tags && (
+                <div class="tags">
+                  {post.data.tags.map((tag) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+              )
+            }
+          </article>
+        ))
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 4rem 1rem 2rem;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+  .post-list {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1rem 4rem;
+  }
+  .empty {
+    text-align: center;
+    color: #999;
+    padding: 3rem 0;
+  }
+  .post-card {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  .post-card:last-child {
+    border-bottom: none;
+  }
+  .post-card time {
+    color: #999;
+    font-size: 0.9rem;
+  }
+  .post-card h2 {
+    margin: 0.5rem 0;
+  }
+  .post-card h2 a {
+    text-decoration: none;
+    color: #1a1a1a;
+  }
+  .post-card h2 a:hover {
+    color: #0066cc;
+  }
+  .post-card p {
+    color: #555;
+    line-height: 1.6;
+  }
+  .tags {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.8rem;
+    background: #f0f0f0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    color: #666;
+  }
+</style>
