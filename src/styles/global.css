@@ -41,6 +41,21 @@ footer {
   border-top: 1px solid #eee;
 }
 
+.rss-link {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  color: #666;
+}
+
+.rss-link:hover {
+  color: #0066cc;
+  border-color: #0066cc;
+}
+
 a {
   color: #0066cc;
 }

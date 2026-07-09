@@ -29,7 +29,10 @@ import '../styles/global.css';
       <slot />
     </main>
     <footer>
-      <p>&copy; {new Date().getFullYear()} bcggxx. Powered by Astro.</p>
+      <p>
+        &copy; {new Date().getFullYear()} bcggxx. Powered by Astro.
+        <a class="rss-link" href="/rss.xml" title="RSS 订阅">RSS</a>
+      </p>
     </footer>
   </body>
 </html>
