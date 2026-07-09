@@ -5,6 +5,9 @@ export interface Props {
 }
 
 const { title, description } = Astro.props;
+
+// 通过 import 引入全局样式，Astro 会自动打包并注入 <link>
+import '../styles/global.css';
 ---
 
 <!doctype html>
@@ -14,7 +17,6 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description || title} />
-    <link rel="stylesheet" href="/styles/global.css" />
   </head>
   <body>
     <header>
