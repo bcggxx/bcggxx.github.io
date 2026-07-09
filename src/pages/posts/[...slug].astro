@@ -3,7 +3,10 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
+  // 与首页保持一致：生产环境过滤草稿，避免草稿内容被构建并公开访问
+  const posts = await getCollection('posts', ({ data }) =>
+    import.meta.env.PROD ? !data.draft : true
+  );
   return posts.map((post) => ({
     params: { slug: post.id.replace(/\.md$/, '') },
     props: { post },
