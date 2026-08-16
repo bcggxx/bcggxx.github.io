@@ -15,7 +15,7 @@ export async function GET(context) {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
-      link: `/posts/${post.id.replace(/\.md$/, '')}/`,
+      link: `/posts/${post.id}/`,
     })),
   });
 }
